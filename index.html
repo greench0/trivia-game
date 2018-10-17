@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" type="text/css" href="assets/css/style.css"> -->
+  <script src="assets/javascript/scripts.js"></script>
+  
+</head>
+<body>
+
+    
+    
+    <h1>Basic Trivia Game</h1>
+    
+    <button id="startButton">START</button>
+    <div id="trivia"></div>
+    <div class='question'></div>
+<button id="submitButton">Submit</button>
+<div id="results"></div>
+
+
+
+    <script>
+
+
+// ==========================================================
+
+// Create a basic html button then create an onClick event that triggers an on click event.
+// 
+// function triviaGame(question, answers, correctAnswer) {
+// this.question = question;
+// this.answers = answers;
+// this.correctAnswer = correctAnswer;
+// } // end function triviagame
+// 
+// 
+// let question1 = new triviaGame("What is 30/3?", [10, "New York", "banana"], "10");
+// 
+// console.log(question1.question); 
+// console.log(question1.answers); 
+// console.log(question1.correctAnswer); 
+
+
+//add an eventlistner to the start button. when clicked run createQuestion function
+startButton.addEventListener('click', self.createQuestion);
+
+var questions = [{
+    question: "What is 2*5?",
+    answers: [2,5,10,15],
+    correctAnswer:2
+},{
+    question: "What is 3*6?",
+    answers: [3,6,9,12],
+    correctAnswer:4
+},{
+    question: "What is 8*9?",
+    answers: [72,99,108,134],
+    correctAnswer:0
+},{
+    question: "What is 1*7?",
+    answers: [4,5,6,7,8],
+    correctAnswer:3
+},{
+    question: "What is 8*8?",
+    answers: [20,30,40,50],
+    correctAnswer:4
+}];
+
+var currentQ = 0;
+var correctAnswers = 0;
+
+
+
+console.log(questions.length);
+console.log(questions[currentQ].question);
+
+// hide submit button
+$("body").find("#submitButton").hide();
+// ==========================================================
+// create a function to add a new div called question to the page
+function createQuestion() {
+    $("body").find("#startButton").hide();
+// var question = questions[currentQ].question;
+// $(".question").append(question);
+
+// var createDiv = $("#trivia").append("<div class='question'></div>");
+$(".question").text('Question: ' + questions[currentQ].question);
+
+var currentAnswer = questions[currentQ].answers.length;
+var choice;
+  for (i = 0; i < currentAnswer; i++) {
+      choice = questions[currentQ].answers[i];
+      $('<li><input type="radio" value=' + i + ' name="dynradio" />' + choice + '</li>').appendTo(".question");
+  }
+
+$("body").find("#submitButton").show();
+currentQ++;
+// $(".question").append('answers: ' + questions[currentQ].answers[0] + '<input type="radio" name="rbtnCount" />');
+// $(".question").append(questions[currentQ].answers[1] + '<input type="radio" name="rbtnCount" />');
+// $(".question").append(questions[currentQ].answers[2] + '<input type="radio" name="rbtnCount" />');
+// $(".question").append(questions[currentQ].answers[3] + '<input type="radio" name="rbtnCount" />');
+}// end createQuestion
+// 
+// createQuestion();
+
+
+// function test(){
+//     var i; for (i = 0; i < questions.length; ++i) {
+//         console.log(questions[i].question);
+// }
+
+// question = questions[currentQ].question;
+
+// }
+
+
+
+// create radio buttons
+// function createQuestionElement(index) {
+//     var qDiv = document.createElement('div');
+//     qDiv.setAttribute('id','question');
+//     var question = document.createElement('p');
+//     question.innerHTML = questions[index].question;
+//     qDiv.appendChild(question);
+//     qDiv.appendChild(createRadios(index));
+//     return qDiv;
+// }
+
+// function createRadios(index) {
+// $(".question").append(createRadios());
+//     var radioList = document.createElement('ul');
+//     var str;
+//     for(var i=0; i<questions[index].answers.length ; i++){
+//         var item = document.createElement('li');
+//         var input = '<input type="radio" name="answer" value=' + i 
+//             + ' />';
+//         input += questions[index].answers[i];
+        
+//         item.innerHTML =input;
+//         radioList.appendChild(item);
+//     }
+    
+//     return radioList;
+// }
+
+
+
+
+
+
+
+
+
+
+
+// showQuestions(question1, quizContainer);
+// ==========================================================
+
+
+
+// 7. OVERALL STRUCTURE
+// ==========================================================
+
+
+     
+    </script>
+
+  </body>
+</html>
