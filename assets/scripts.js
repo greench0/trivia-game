@@ -11,9 +11,27 @@ $(document).ready(function () {
   // 
   // ==========================================================
 
-  //add an eventlistner to the start button. when clicked run createQuestion function
-  startButton.addEventListener('click', self.createQuestion);
+// global variables 
+var currentQ = 0;
+var userCorrectAnswers = 0;
+var userWrongAnswers = 0;
+  
+$("#results").hide();
+$(".timer").hide();
 
+function buttonClick() {
+  $(".restart").on("click", function () {
+    console.log("restart text");
+   
+    });
+       
+  } // ========== end answer button options ==========
+  
+function restart() {
+currentQ = 0;
+userCorrectAnswers = 0;
+userWrongAnswers = 0;
+}
   // ======================== 
   // variable for questions, answers, and correct answers 
   var questions = [{
@@ -21,8 +39,8 @@ $(document).ready(function () {
     answers: [2, 5, 10, 15],
     correctAnswer: 2
   }, {
-    question: "What is 3 * 1?",
-    answers: [3, 6, 9, 12],
+    question: "What is 4 - 1?",
+    answers: [1, 2, 3, 4],
     correctAnswer: 0
   }, {
     question: "What is 5 + 5?",
@@ -30,8 +48,8 @@ $(document).ready(function () {
     correctAnswer: 1
   }, {
     question: "What is 1 * 6?",
-    answers: [4, 5, 6, 7, 8],
-    correctAnswer: 2
+    answers: [4, 5, 6, 7],
+    correctAnswer: "2"
   }, {
     question: "What is 8 * 8?",
     answers: [64, 30, 40, 50],
@@ -39,141 +57,132 @@ $(document).ready(function () {
   }];
 
 
-// global variables 
-var currentQ = 0;
-var correctAnswers = 0;
-var wrongAnswers = 0;
 
-
-// when you click the start button run createquestion function
+  // when you click the start button run createTrivia function
   $("#startButton").on("click", function () {
-  createQuestion();
+    $(".timer").show();
+    countDown();
+    createAnswer();
+    
+//     delayButtonAlert = setTimeout(function() {
+//       currentQ++;
+// createAnswer();
+//     }, 5000);
+    
   });
 
 
 
   // ==========================================================
-  // create a function that generates the Current Question and answer options,
-  function createQuestion() {
-    // hide the start button
-    $("#startButton").hide();
+  // countdown timer function
+  function countDown() {
+    var n = $('.c').attr('id');
+    var c = n;
+    $('.c').text(c);
+    setInterval(function () {
+      c--;
+      if (c >= 0) {
+        $('.c').text(c);
+      }
+      // if (c == 0) {
+      //   $('.c').text(n);
+      // }
+    }, 1000);
 
-    // add the current question to the questions div in the html
-    $(".trivia").text('Question: ' + questions[currentQ].question);
+  }
 
-    // create the answers div and add it to the questins
-    $('<div class=answers/></div>').appendTo(".trivia");
-    
-  
-    // data
-    var answers = questions[currentQ].answers.length;
-    var correct = questions[currentQ].correctAnswer;
-
-    var choice;
-    for (i = 0; i < answers; i++) {
-      choice = questions[currentQ].answers[i];
-      $("<br>" + '<button id=answer' + i + '>' + choice + '</button>').appendTo(".answers");
-    }
-
-
-
+  // Start
  
 
-  
-// ========== answer button options =============            
-$("#answer0").on("click", function () {
-//   if (questions[currentQ] === undefined) {
-//     console.log("undefined!!!!!");
-// } 
-  
-   if (0 === correct) {
-    correctAnswers++;
-    console.log("woop" + correctAnswers);
+
+
+  // ==========================================================
+  // create a function that generates the Current Question and answer options,
+  function createAnswer() {
+    // hide the start button
+    $("#startButton").hide();
+    
+    check()
+    createQuestion();
+    countDown();
+    // create the answers div and add it to the questins
+    $(".trivia").html('<div class=answers/></div>');
+
+    // variable data
+    var answers = questions[currentQ].answers;
+   
+    for (i = 0; i < answers.length; i++) {
+     var choice = answers[i];
+      $(".answers").append("<br>" + '<button class= buttons id=' + i + '>' + choice + '</button>');
+    }
+    buttonClick();
+   
+  }// =========== end createAnswer ===========
+
+
+ // ==========================================================
+  // create the Current Question
+  function createQuestion() {
+    // add the current question to the questions div in the html
+    var question = questions[currentQ].question;
+    $(".question").text('Question: ' + question);
   }
-  else {
-    wrongAnswers++;
-    console.log("noo" + correctAnswers);
-  }
-
-  currentQ++;
-  createQuestion();
-});
-
-
-$("#answer1").on("click", function () {
-  if (1 === correct) {
-    correctAnswers++;
-    console.log("woop" + correctAnswers);
-  }
-  else {
-    wrongAnswers++;
-    console.log("noo" + correctAnswers);
-  }
-  currentQ++;
-  createQuestion();
-});
-
-
-$("#answer2").on("click", function () {
-  if (2 === correct) {
-    correctAnswers++;
-    console.log("woop" + correctAnswers);
-  }
-  else {
-    wrongAnswers++;
-    console.log("noo" + correctAnswers);
-  }
-  currentQ++;
-  createQuestion();
-});
-
-
-$("#answer3").on("click", function () {
-  if (3 === correct) {
-    correctAnswers++;
-    console.log("woop" + correctAnswers);
-  }
-  else {
-    wrongAnswers++;
-    console.log("noo" + correctAnswers);
-  }
-  currentQ++;
-  createQuestion();
-});
-// ========== end answer button options ==========
-
-    // show how many questions you have answered
-    $(".question").append("<br>" + "You have answered: " + currentQ + " out of " + questions.length + " questions");
-
-
-    // add +++ to the current question so when it runs again. it goes to the next question in the array.
-    displayScore();
-  }// =========== end createQuestion ===========
 
 
 
+ // ==========================================================
+function check() {
+    if (questions[currentQ] === undefined) {
+      $(".trivia").hide();
+      $(".quizMessage").hide();
+      $(".question").hide();
+      $("#results").show();
+      $("#startButton").show();
+      $("#buttonDiv").html('<button class=restart>Restart</button>');
+      restart();
+    } 
+ else {
+   console.log("etcsdlfjk");
+ }
 
+ 
+} // ==========================================================
+
+  // ========== button click function =============            
+  function buttonClick() {
+  $(".buttons").on("click", function () {
+    check()
+
+    var variableQ = questions[currentQ].correctAnswer;
+var parseVariableQ = ''+ variableQ + ''; 
+console.log(parseVariableQ);
+    var buttonValue = ($(this).attr('id'));
+    // console.log(parseVariableQ, "-- " + buttonValue);
+    if (parseVariableQ === buttonValue) {
+      console.log("woop" );
+      userCorrectAnswers++;
+      } 
+      else {
+        userWrongAnswers++;
+      }
+      displayScore()
+
+    currentQ++;
+createAnswer();
+    return buttonValue;
+    });
+       
+  } // ========== end answer button options ==========
+    
 
   //=================================
   // display score
   function displayScore() {
     $(".quizMessage").text("You have answered: " + currentQ + " out of " + questions.length + " questions");
-   
-    
-    // $(document).find("#results").text("Correct Answers: " + correctAnswers);
-    $(document).find(".quizContainer > .result").show();
+    $(".correct").text(userCorrectAnswers);
+    $(".wrong").text(userWrongAnswers);
 
-    $(".correct").text(correctAnswers);
-    $(".wrong").text(wrongAnswers);
-
-    console.log(correctAnswers);
   }
 
-
   // ==========================================================
-
-  // ==========================================================
-
-
-
 }); // end document ready
